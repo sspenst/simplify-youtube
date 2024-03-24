@@ -1,1 +1,9 @@
-console.log("This is a popup!")
+document.addEventListener("DOMContentLoaded", () => {
+  const cleanButton = document.getElementById("cleanButton");
+
+  cleanButton.addEventListener("click", () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: "clean" });
+    });
+  });
+});

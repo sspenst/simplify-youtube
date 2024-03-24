@@ -1,59 +1,42 @@
-let navShortsRemoved = false;
-let miniNavShortsRemoved = false;
+function clean() {
+  const guideEntries = document.querySelectorAll("ytd-guide-entry-renderer");
 
-function setupObserver() {
-  // only run on youtube homepage and subscription page
-  if (![
-    'https://www.youtube.com/',
-    'https://www.youtube.com/feed/subscriptions',
-  ].includes(window.location.href)) {
-    return;
+  for (const guideEntry of guideEntries) {
+    const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
+
+    if (ytFormattedString && ytFormattedString.innerText === "Shorts") {
+      guideEntry.remove();
+    }
   }
 
-  let removedSections = 0;
+  const miniGuideEntries = document.querySelectorAll("ytd-mini-guide-entry-renderer");
 
-  const observer = new MutationObserver((_) => {
-    if (!navShortsRemoved) {
-      const elementToRemove = document.querySelectorAll("ytd-guide-entry-renderer");
-  
-      if (elementToRemove.length > 1) {
-        console.log('remove shorts');
-        elementToRemove[1].remove();
-        navShortsRemoved = true;
-      }
-    }
+  for (const miniGuideEntry of miniGuideEntries) {
+    // if <yt-formatted-string> is "Shorts" then remove
+    const span = miniGuideEntry.querySelector("span");
 
-    if (!miniNavShortsRemoved) {
-      const miniElementToRemove = document.querySelectorAll("ytd-mini-guide-entry-renderer");
-  
-      if (miniElementToRemove.length > 1) {
-        console.log('remove mini shorts');
-        miniElementToRemove[1].remove();
-        miniNavShortsRemoved = true;
-      }
+    if (span && span.innerText === "Shorts") {
+      miniGuideEntry.remove();
     }
-  
-    const richSections = document.querySelectorAll("ytd-rich-section-renderer");
-  
-    for (const section of richSections) {
-      section.remove();
-      console.log('removed');
-      removedSections++;
-    }
+  }
 
-    function isClean() {
-      return navShortsRemoved && miniNavShortsRemoved && removedSections > 0;
-    }
-  
-    if (isClean()) {
-      console.log('clean', removedSections);
-      observer.disconnect();
-    }
-  });
+  const richSections = document.querySelectorAll("ytd-rich-section-renderer");
+
+  for (const section of richSections) {
+    section.remove();
+  }
+}
+
+function setupObserver() {
+  const observer = new MutationObserver(clean);
   
   observer.observe(document.body, { childList: true, subtree: true });  
 }
 
 setupObserver();
 
-window.navigation.addEventListener("navigate", setupObserver)
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "clean") {
+    clean();
+  }
+})
