@@ -5,7 +5,7 @@ function clean() {
     const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
 
     if (ytFormattedString && ytFormattedString.innerText === "Shorts") {
-      guideEntry.remove();
+      guideEntry.style.display = "none";
     }
   }
 
@@ -16,30 +16,31 @@ function clean() {
     const span = miniGuideEntry.querySelector("span");
 
     if (span && span.innerText === "Shorts") {
-      miniGuideEntry.remove();
+      miniGuideEntry.style.display = "none";
     }
   }
 
   const richSections = document.querySelectorAll("ytd-rich-section-renderer");
 
   for (const section of richSections) {
-    section.remove();
+    section.style.display = "none";
   }
 
   const reelShelfs = document.querySelectorAll("ytd-reel-shelf-renderer");
 
   for (const reelShelf of reelShelfs) {
-    reelShelf.remove();
+    reelShelf.style.display = "none";
   }
 
   // TODO: make removing related videos optional
-  const relatedVideos = document.getElementById("secondary");
+  // NB: need to specify the class because sometimes youtube adds multiple divs with the same id
+  const relatedVideos = document.querySelector("ytd-watch-flexy #secondary");
 
   if (relatedVideos) {
     const parent = relatedVideos.parentElement;
 
-    relatedVideos.remove();
     parent.style.justifyContent = "center";
+    relatedVideos.style.display = "none";
   }
 }
 
