@@ -1,3 +1,5 @@
+let hideRelatedVideos = false;
+
 function clean() {
   const guideEntries = document.querySelectorAll("ytd-guide-entry-renderer");
 
@@ -32,7 +34,6 @@ function clean() {
     reelShelf.style.display = "none";
   }
 
-  // TODO: make removing related videos optional
   // NB: need to specify the class because sometimes youtube adds multiple divs with the same id
   const relatedVideos = document.querySelector("ytd-watch-flexy #secondary");
 
@@ -40,7 +41,7 @@ function clean() {
     const parent = relatedVideos.parentElement;
 
     parent.style.justifyContent = "center";
-    relatedVideos.style.display = "none";
+    relatedVideos.style.display = hideRelatedVideos ? "block" : "none";
   }
 }
 
@@ -56,4 +57,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "clean") {
     clean();
   }
-})
+});
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && 'relatedCheckbox' in changes) {
+    hideRelatedVideos = changes.relatedCheckbox.newValue;
+    clean();
+  }
+});
+
+chrome.storage.local.get('relatedCheckbox', (data) => {
+  hideRelatedVideos = data.relatedCheckbox || false;
+  clean();
+});

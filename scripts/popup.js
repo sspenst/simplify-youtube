@@ -6,4 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
       chrome.tabs.sendMessage(tabs[0].id, { action: "clean" });
     });
   });
+
+  const relatedCheckbox = document.getElementById('relatedCheckbox');
+
+  chrome.storage.local.get('relatedCheckbox', (data) => {
+    relatedCheckbox.checked = data.relatedCheckbox || false;
+  });
+
+  relatedCheckbox.addEventListener('change', () => {
+    chrome.storage.local.set({ relatedCheckbox: relatedCheckbox.checked });
+  });
 });
