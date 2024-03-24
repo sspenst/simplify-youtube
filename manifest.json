@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Clean YouTube",
-  "description": "Remove unnecessary elements from YouTube (especially YouTube Shorts)",
+  "description": "Remove unnecessary elements from YouTube",
   "version": "1.0",
   "action": {
     "default_popup": "hello.html"
