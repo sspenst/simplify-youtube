@@ -31,6 +31,16 @@ function clean() {
   for (const reelShelf of reelShelfs) {
     reelShelf.remove();
   }
+
+  // TODO: make removing related videos optional
+  const relatedVideos = document.getElementById("secondary");
+
+  if (relatedVideos) {
+    const parent = relatedVideos.parentElement;
+
+    relatedVideos.remove();
+    parent.style.justifyContent = "center";
+  }
 }
 
 function setupObserver() {
