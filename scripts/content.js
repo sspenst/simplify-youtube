@@ -25,6 +25,12 @@ function clean() {
   for (const section of richSections) {
     section.remove();
   }
+
+  const reelShelfs = document.querySelectorAll("ytd-reel-shelf-renderer");
+
+  for (const reelShelf of reelShelfs) {
+    reelShelf.remove();
+  }
 }
 
 function setupObserver() {
