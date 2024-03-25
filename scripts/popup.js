@@ -7,18 +7,22 @@ document.addEventListener("DOMContentLoaded", () => {
   //   });
   // });
 
+  const homeCheckbox = document.getElementById('homeCheckbox');
   const richCheckbox = document.getElementById('richCheckbox');
   const relatedCheckbox = document.getElementById('relatedCheckbox');
-  const homeCheckbox = document.getElementById('homeCheckbox');
 
   chrome.storage.local.get([
+    'homeCheckbox',
     'richCheckbox',
     'relatedCheckbox',
-    'homeCheckbox',
   ], (data) => {
+    homeCheckbox.checked = data.homeCheckbox !== undefined ? data.homeCheckbox : true;
     relatedCheckbox.checked = data.relatedCheckbox || false;
     richCheckbox.checked = data.richCheckbox || false;
-    homeCheckbox.checked = data.homeCheckbox !== undefined ? data.homeCheckbox : true;
+  });
+
+  homeCheckbox.addEventListener('change', () => {
+    chrome.storage.local.set({ homeCheckbox: homeCheckbox.checked });
   });
 
   relatedCheckbox.addEventListener('change', () => {
@@ -27,9 +31,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   richCheckbox.addEventListener('change', () => {
     chrome.storage.local.set({ richCheckbox: richCheckbox.checked });
-  });
-
-  homeCheckbox.addEventListener('change', () => {
-    chrome.storage.local.set({ homeCheckbox: homeCheckbox.checked });
   });
 });

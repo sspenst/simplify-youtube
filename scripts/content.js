@@ -1,7 +1,7 @@
-let relatedCheckbox = false;
-let richCheckbox = false;
 let homeCheckbox = true;
 let homeOnclick = undefined;
+let relatedCheckbox = false;
+let richCheckbox = false;
 
 function clean() {
   const miniGuideEntries = document.querySelectorAll("ytd-mini-guide-entry-renderer");
@@ -20,11 +20,11 @@ function clean() {
     }
   }
 
-  // need to specify the class because sometimes youtube adds multiple divs with the same id
+  // need to specify the class because there are multiple elements with this id
   const logo = document.querySelector("a[id='logo']");
 
   if (logo) {
-    if (!homeOnclick) {
+    if (homeOnclick === undefined) {
       homeOnclick = logo.onclick;
     }
 
@@ -89,7 +89,7 @@ function clean() {
     reelShelf.style.display = richCheckbox ? "flex" : "none";
   }
 
-  // need to specify the class because sometimes youtube adds multiple divs with the same id
+  // need to specify the class because sometimes youtube adds multiple elements with this id
   const relatedVideos = document.querySelector("ytd-watch-flexy #secondary");
 
   if (relatedVideos) {
@@ -119,6 +119,10 @@ chrome.storage.onChanged.addListener((changes, area) => {
     return;
   }
 
+  if ('homeCheckbox' in changes) {
+    homeCheckbox = changes.homeCheckbox.newValue;
+  }
+
   if ('richCheckbox' in changes) {
     richCheckbox = changes.richCheckbox.newValue;
   }
@@ -127,20 +131,16 @@ chrome.storage.onChanged.addListener((changes, area) => {
     relatedCheckbox = changes.relatedCheckbox.newValue;
   }
 
-  if ('homeCheckbox' in changes) {
-    homeCheckbox = changes.homeCheckbox.newValue;
-  }
-
   clean();
 });
 
 chrome.storage.local.get([
+  'homeCheckbox',
   'richCheckbox',
   'relatedCheckbox',
-  'homeCheckbox',
 ], (data) => {
+  homeCheckbox = data.homeCheckbox !== undefined ? data.homeCheckbox : true;
   relatedCheckbox = data.relatedCheckbox || false;
   richCheckbox = data.richCheckbox || false;
-  homeCheckbox = data.homeCheckbox !== undefined ? data.homeCheckbox : true;
   clean();
 });

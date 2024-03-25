@@ -1,6 +1,7 @@
-# Clean YouTube
+# Minimal YouTube
 
-Remove unnecessary elements from YouTube
+Hide features you don't use
+- Home
 - Rich Sections (Shorts, Breaking News, etc)
 - Related Videos
 
