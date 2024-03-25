@@ -1,7 +1,8 @@
 const options = {
   homeCheckbox: true,
-  newsCheckbox: false,
   shortsCheckbox: false,
+  subscriptionsCheckbox: true,
+  newsCheckbox: false,
   relatedCheckbox: false,
 };
 

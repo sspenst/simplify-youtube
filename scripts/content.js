@@ -2,21 +2,37 @@ const options = {
   homeCheckbox: true,
   newsCheckbox: false,
   shortsCheckbox: false,
+  subscriptionsCheckbox: true,
   relatedCheckbox: false,
 };
 
-let homeOnclick = undefined;
+let logoOnclick = undefined;
 
-function clean() {
-  // need to specify the class because there are multiple elements with this id
-  const logo = document.querySelector("a[id='logo']");
+function countMajorSections() {
+  let count = 0;
+  
+  if (options.homeCheckbox) {
+    count++;
+  }
 
-  if (logo) {
-    if (homeOnclick === undefined) {
-      homeOnclick = logo.onclick;
-    }
+  if (options.shortsCheckbox) {
+    count++;
+  }
 
-    logo.onclick = options.homeCheckbox ? homeOnclick : (e) => {
+  if (options.subscriptionsCheckbox) {
+    count++;
+  }
+
+  return count;
+}
+
+function getLogoOnclick() {
+  if (options.homeCheckbox) {
+    return logoOnclick;
+  }
+
+  if (options.subscriptionsCheckbox) {
+    return (e) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -31,31 +47,86 @@ function clean() {
     };
   }
 
+  if (options.shortsCheckbox) {
+    return (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const a = document.querySelector("a[title='Shorts']");
+
+      if (a) {
+        a.click();
+      } else {
+        // shorts link may not be available if we haven't opened the guide yet
+        window.location.href = "/shorts";
+      }
+    };
+  }
+
+  return logoOnclick;
+}
+
+function clean() {
+  // need to specify the class because there are multiple elements with this id
+  const logo = document.querySelector("a[id='logo']");
+
+  if (logo) {
+    if (logoOnclick === undefined) {
+      logoOnclick = logo.onclick;
+    }
+
+    logo.onclick = getLogoOnclick();
+  }
+
   // major sections in nav bar
-  for (const guideSection of document.querySelectorAll("ytd-guide-section-renderer")) {
+  const guideSections = document.querySelectorAll("ytd-guide-section-renderer")
+
+  if (guideSections.length > 0) {
+    // major links + you section
+    const mainGuideSection = guideSections[0];
+    const you = mainGuideSection.querySelector("ytd-guide-collapsible-section-entry-renderer");
+  
+    if (you) {
+      if (countMajorSections() === 0) {
+        you.style.marginTop = "0";
+        you.style.borderTopWidth = "0";
+        you.style.paddingTop = "0";
+      } else {
+        you.style.marginTop = "12px";
+        you.style.borderTopWidth = "1px";
+        you.style.paddingTop = "12px";
+      }
+    }
+  
+    // links in the main nav section
+    for (const guideEntry of mainGuideSection.querySelectorAll("ytd-guide-entry-renderer")) {
+      const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
+  
+      if (!ytFormattedString) {
+        continue;
+      }
+  
+      if (ytFormattedString.innerText === "Home") {
+        guideEntry.style.display = options.homeCheckbox ? "block" : "none";
+      } else if (ytFormattedString.innerText === "Shorts") {
+        guideEntry.style.display = options.shortsCheckbox ? "block" : "none";
+      } else if (ytFormattedString.innerText === "Subscriptions") {
+        guideEntry.style.display = options.subscriptionsCheckbox ? "block" : "none";
+      }
+    }
+  }
+
+  for (const guideSection of guideSections) {
     const ytFormattedString = guideSection.querySelector("yt-formatted-string");
 
     if (!ytFormattedString) {
       continue;
     }
 
-    if (ytFormattedString.innerText === "Explore") {
+    if (ytFormattedString.innerText === "Subscriptions") {
+      guideSection.style.display = options.subscriptionsCheckbox ? "block" : "none";
+    } else if (ytFormattedString.innerText === "Explore") {
       guideSection.style.display = options.homeCheckbox ? "block" : "none";
-    }
-  }
-
-  // links in nav bar
-  for (const guideEntry of document.querySelectorAll("ytd-guide-entry-renderer")) {
-    const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
-
-    if (!ytFormattedString) {
-      continue;
-    }
-
-    if (ytFormattedString.innerText === "Home") {
-      guideEntry.style.display = options.homeCheckbox ? "block" : "none";
-    } else if (ytFormattedString.innerText === "Shorts") {
-      guideEntry.style.display = options.shortsCheckbox ? "block" : "none";
     }
   }
 
@@ -71,6 +142,8 @@ function clean() {
       miniGuideEntry.style.display = options.homeCheckbox ? "block" : "none";
     } else if (span.innerText === "Shorts") {
       miniGuideEntry.style.display = options.shortsCheckbox ? "block" : "none";
+    } else if (span.innerText === "Subscriptions") {
+      miniGuideEntry.style.display = options.subscriptionsCheckbox ? "block" : "none";
     }
   }
 
