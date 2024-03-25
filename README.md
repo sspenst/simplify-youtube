@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/icon-32.png" alt="Minimal YouTube" />
+  <img src="images/icon-48.png" alt="Minimal YouTube" />
 </p>
 <h1 align="center">
   Minimal YouTube
