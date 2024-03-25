@@ -5,9 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clean YouTube</title>
     <script src="scripts/popup.js"></script>
+    <link href="./output.css" rel="stylesheet">
   </head>
-  <body>
-    <button id="cleanButton">Force Clean</button>
-    <input type="checkbox" id="relatedCheckbox">Related Videos</input>
+  <body class="p-2 flex flex-col gap-2 w-48">
+    <div class="flex gap-2">
+      <input type="checkbox" id="richCheckbox" />
+      <label for="richCheckbox">Rich Sections (Shorts, Breaking News, etc.)</label>
+    </div>
+    <div class="flex gap-2">
+      <input type="checkbox" id="relatedCheckbox" />
+      <label for="relatedCheckbox">Related Videos</label>
+    </div>
+    <!-- <button id="cleanButton">Force Clean</button> -->
   </body>
 </html>

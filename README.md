@@ -1,5 +1,8 @@
 # Clean YouTube
 
 Remove unnecessary elements from YouTube
-- `<ytd-rich-section-renderer>` elements (Shorts, Breaking News, etc)
-- Shorts button in guide
+- Rich Sections (Shorts, Breaking News, etc)
+- Related Videos
+
+Tailwind
+- `npx tailwindcss -i ./input.css -o ./output.css --watch`
