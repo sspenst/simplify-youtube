@@ -9,13 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const richCheckbox = document.getElementById('richCheckbox');
   const relatedCheckbox = document.getElementById('relatedCheckbox');
+  const homeCheckbox = document.getElementById('homeCheckbox');
 
   chrome.storage.local.get([
     'richCheckbox',
     'relatedCheckbox',
+    'homeCheckbox',
   ], (data) => {
     relatedCheckbox.checked = data.relatedCheckbox || false;
     richCheckbox.checked = data.richCheckbox || false;
+    homeCheckbox.checked = data.homeCheckbox !== undefined ? data.homeCheckbox : true;
   });
 
   relatedCheckbox.addEventListener('change', () => {
@@ -24,5 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   richCheckbox.addEventListener('change', () => {
     chrome.storage.local.set({ richCheckbox: richCheckbox.checked });
+  });
+
+  homeCheckbox.addEventListener('change', () => {
+    chrome.storage.local.set({ homeCheckbox: homeCheckbox.checked });
   });
 });

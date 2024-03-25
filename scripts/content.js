@@ -1,24 +1,75 @@
 let relatedCheckbox = false;
 let richCheckbox = false;
+let homeCheckbox = true;
+let homeOnclick = undefined;
 
 function clean() {
-  const guideEntries = document.querySelectorAll("ytd-guide-entry-renderer");
-
-  for (const guideEntry of guideEntries) {
-    const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
-
-    if (ytFormattedString && ytFormattedString.innerText === "Shorts") {
-      guideEntry.style.display = richCheckbox ? "block" : "none";
-    }
-  }
-
   const miniGuideEntries = document.querySelectorAll("ytd-mini-guide-entry-renderer");
 
   for (const miniGuideEntry of miniGuideEntries) {
     const span = miniGuideEntry.querySelector("span");
 
-    if (span && span.innerText === "Shorts") {
+    if (!span) {
+      continue;
+    }
+
+    if (span.innerText === "Home") {
+      miniGuideEntry.style.display = homeCheckbox ? "block" : "none";
+    } else if (span.innerText === "Shorts") {
       miniGuideEntry.style.display = richCheckbox ? "block" : "none";
+    }
+  }
+
+  // need to specify the class because sometimes youtube adds multiple divs with the same id
+  const logo = document.querySelector("a[id='logo']");
+
+  if (logo) {
+    if (!homeOnclick) {
+      homeOnclick = logo.onclick;
+    }
+
+    logo.onclick = homeCheckbox ? homeOnclick : (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const a = document.querySelector("a[href='/feed/subscriptions']");
+
+      if (a) {
+        a.click();
+      } else {
+        // subscriptions link may not be available if we haven't opened the guide yet
+        window.location.href = "/feed/subscriptions";
+      }
+    };
+  }
+
+  const guideEntries = document.querySelectorAll("ytd-guide-entry-renderer");
+
+  for (const guideEntry of guideEntries) {
+    const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
+
+    if (!ytFormattedString) {
+      continue;
+    }
+
+    if (ytFormattedString.innerText === "Home") {
+      guideEntry.style.display = homeCheckbox ? "block" : "none";
+    } else if (ytFormattedString.innerText === "Shorts") {
+      guideEntry.style.display = richCheckbox ? "block" : "none";
+    }
+  }
+
+  const guideSections = document.querySelectorAll("ytd-guide-section-renderer");
+
+  for (const guideSection of guideSections) {
+    const ytFormattedString = guideSection.querySelector("yt-formatted-string");
+
+    if (!ytFormattedString) {
+      continue;
+    }
+
+    if (ytFormattedString.innerText === "Explore") {
+      guideSection.style.display = homeCheckbox ? "block" : "none";
     }
   }
 
@@ -76,14 +127,20 @@ chrome.storage.onChanged.addListener((changes, area) => {
     relatedCheckbox = changes.relatedCheckbox.newValue;
   }
 
+  if ('homeCheckbox' in changes) {
+    homeCheckbox = changes.homeCheckbox.newValue;
+  }
+
   clean();
 });
 
 chrome.storage.local.get([
   'richCheckbox',
   'relatedCheckbox',
+  'homeCheckbox',
 ], (data) => {
   relatedCheckbox = data.relatedCheckbox || false;
   richCheckbox = data.richCheckbox || false;
+  homeCheckbox = data.homeCheckbox !== undefined ? data.homeCheckbox : true;
   clean();
 });
