@@ -235,11 +235,11 @@ function setupObserver() {
 
 setupObserver();
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "clean") {
-    clean();
-  }
-});
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//   if (message.action === "clean") {
+//     clean();
+//   }
+// });
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') {

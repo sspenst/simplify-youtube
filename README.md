@@ -7,8 +7,11 @@
 
 ### Hide features you don't use
 - Home
-- Rich Sections (Shorts, Breaking News, etc)
-- Related Videos
+- Shorts
+- Subscriptions
+- Comments
+- Related videos
+- Breaking news
 
 ### Tailwind
 - `npx tailwindcss -i ./input.css -o ./output.css --watch --minify`
