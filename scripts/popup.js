@@ -2,8 +2,9 @@ const options = {
   homeCheckbox: true,
   shortsCheckbox: false,
   subscriptionsCheckbox: true,
+  commentsCheckbox: true,
+  relatedCheckbox: true,
   newsCheckbox: false,
-  relatedCheckbox: false,
 };
 
 document.addEventListener("DOMContentLoaded", () => {

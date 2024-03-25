@@ -1,9 +1,10 @@
 const options = {
   homeCheckbox: true,
-  newsCheckbox: false,
   shortsCheckbox: false,
   subscriptionsCheckbox: true,
-  relatedCheckbox: false,
+  commentsCheckbox: true,
+  relatedCheckbox: true,
+  newsCheckbox: false,
 };
 
 let logoOnclick = undefined;
@@ -167,17 +168,6 @@ function clean() {
     reelShelf.style.display = options.shortsCheckbox ? "flex" : "none";
   }
 
-  // related videos column
-  // NB: need to specify the class because sometimes youtube adds multiple elements with this id
-  const relatedVideos = document.querySelector("ytd-watch-flexy #secondary");
-
-  if (relatedVideos) {
-    const parent = relatedVideos.parentElement;
-
-    parent.style.justifyContent = "center";
-    relatedVideos.style.display = options.relatedCheckbox ? "block" : "none";
-  }
-
   // links to shorts
   for (const short of document.querySelectorAll("a[href*='/shorts']")) {
     const videoRenderer = short.closest("ytd-video-renderer");
@@ -199,6 +189,41 @@ function clean() {
     if (tab.innerText === "Shorts") {
       tab.style.display = options.shortsCheckbox ? "flex" : "none";
     }
+  }
+
+  // related videos column
+  // need to specify the class because sometimes youtube adds multiple elements with this id
+  const secondary = document.querySelector("ytd-watch-flexy #secondary");
+
+  if (secondary) {
+    // has no visible effect unless we hide secondary, so we can always set this
+    const parent = secondary.parentElement;
+    parent.style.justifyContent = "center";
+    // we want to hide the entire secondary section if we can, but if show chat replay exists we can't
+    let hideSecondary = true;
+
+    const chatContainer = secondary.querySelector("div#chat-container");
+
+    if (chatContainer) {
+      const span = chatContainer.querySelector("span");
+
+      if (span && span.innerText === "Show chat replay") {
+        hideSecondary = false;
+      }
+    }
+
+    secondary.style.display = options.relatedCheckbox || !hideSecondary ? "block" : "none";
+
+    const relatedVideos = document.getElementById("related");
+    
+    if (relatedVideos) {
+      relatedVideos.style.display = options.relatedCheckbox || hideSecondary ? "block" : "none";
+    }
+  }
+
+  // hide ytd-comments
+  for (const comments of document.querySelectorAll("ytd-comments")) {
+    comments.style.display = options.commentsCheckbox ? "block" : "none";
   }
 }
 
