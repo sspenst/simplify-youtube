@@ -1,6 +1,9 @@
-<img src="images/icon-32.png" alt="Minimal YouTube" />
-
-# Minimal YouTube
+<p align="center">
+  <img src="images/icon-32.png" alt="Minimal YouTube" />
+</p>
+<h1 align="center">
+  Minimal YouTube
+</h1>
 
 ### Hide features you don't use
 - Home
