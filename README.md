@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/icon-48.png" alt="Simplify YouTube" />
+  <img src="img/icon-48.png" alt="Simplify YouTube" />
 </p>
 <h1 align="center">
   Simplify YouTube
@@ -12,6 +12,3 @@
 - Comments
 - Related videos
 - Breaking news
-
-### Tailwind
-- `npx tailwindcss -i ./input.css -o ./output.css --watch --minify`
