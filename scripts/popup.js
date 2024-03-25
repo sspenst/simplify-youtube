@@ -1,3 +1,10 @@
+const options = {
+  homeCheckbox: true,
+  newsCheckbox: false,
+  shortsCheckbox: false,
+  relatedCheckbox: false,
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   // const cleanButton = document.getElementById("cleanButton");
 
@@ -7,29 +14,27 @@ document.addEventListener("DOMContentLoaded", () => {
   //   });
   // });
 
-  const homeCheckbox = document.getElementById('homeCheckbox');
-  const richCheckbox = document.getElementById('richCheckbox');
-  const relatedCheckbox = document.getElementById('relatedCheckbox');
+  const optionElements = {};
 
-  chrome.storage.local.get([
-    'homeCheckbox',
-    'richCheckbox',
-    'relatedCheckbox',
-  ], (data) => {
-    homeCheckbox.checked = data.homeCheckbox !== undefined ? data.homeCheckbox : true;
-    relatedCheckbox.checked = data.relatedCheckbox || false;
-    richCheckbox.checked = data.richCheckbox || false;
-  });
+  for (const key in options) {
+    optionElements[key] = document.getElementById(key);
 
-  homeCheckbox.addEventListener('change', () => {
-    chrome.storage.local.set({ homeCheckbox: homeCheckbox.checked });
-  });
+    if (!optionElements[key]) {
+      continue;
+    }
 
-  relatedCheckbox.addEventListener('change', () => {
-    chrome.storage.local.set({ relatedCheckbox: relatedCheckbox.checked });
-  });
+    optionElements[key].addEventListener('change', () => {
+      chrome.storage.local.set({ [key]: optionElements[key].checked });
+    });
+  }
 
-  richCheckbox.addEventListener('change', () => {
-    chrome.storage.local.set({ richCheckbox: richCheckbox.checked });
+  chrome.storage.local.get(Object.keys(options), (data) => {
+    for (const key in options) {
+      if (!optionElements[key]) {
+        continue;
+      }
+
+      optionElements[key].checked = data[key] !== undefined ? data[key] : options[key];
+    }
   });
 });

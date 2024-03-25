@@ -1,25 +1,13 @@
-let homeCheckbox = true;
+const options = {
+  homeCheckbox: true,
+  newsCheckbox: false,
+  shortsCheckbox: false,
+  relatedCheckbox: false,
+};
+
 let homeOnclick = undefined;
-let relatedCheckbox = false;
-let richCheckbox = false;
 
 function clean() {
-  const miniGuideEntries = document.querySelectorAll("ytd-mini-guide-entry-renderer");
-
-  for (const miniGuideEntry of miniGuideEntries) {
-    const span = miniGuideEntry.querySelector("span");
-
-    if (!span) {
-      continue;
-    }
-
-    if (span.innerText === "Home") {
-      miniGuideEntry.style.display = homeCheckbox ? "block" : "none";
-    } else if (span.innerText === "Shorts") {
-      miniGuideEntry.style.display = richCheckbox ? "block" : "none";
-    }
-  }
-
   // need to specify the class because there are multiple elements with this id
   const logo = document.querySelector("a[id='logo']");
 
@@ -28,7 +16,7 @@ function clean() {
       homeOnclick = logo.onclick;
     }
 
-    logo.onclick = homeCheckbox ? homeOnclick : (e) => {
+    logo.onclick = options.homeCheckbox ? homeOnclick : (e) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -43,25 +31,8 @@ function clean() {
     };
   }
 
-  const guideEntries = document.querySelectorAll("ytd-guide-entry-renderer");
-
-  for (const guideEntry of guideEntries) {
-    const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
-
-    if (!ytFormattedString) {
-      continue;
-    }
-
-    if (ytFormattedString.innerText === "Home") {
-      guideEntry.style.display = homeCheckbox ? "block" : "none";
-    } else if (ytFormattedString.innerText === "Shorts") {
-      guideEntry.style.display = richCheckbox ? "block" : "none";
-    }
-  }
-
-  const guideSections = document.querySelectorAll("ytd-guide-section-renderer");
-
-  for (const guideSection of guideSections) {
+  // major sections in nav bar
+  for (const guideSection of document.querySelectorAll("ytd-guide-section-renderer")) {
     const ytFormattedString = guideSection.querySelector("yt-formatted-string");
 
     if (!ytFormattedString) {
@@ -69,34 +40,92 @@ function clean() {
     }
 
     if (ytFormattedString.innerText === "Explore") {
-      guideSection.style.display = homeCheckbox ? "block" : "none";
+      guideSection.style.display = options.homeCheckbox ? "block" : "none";
     }
   }
 
-  const richSections = document.querySelectorAll("ytd-rich-section-renderer");
+  // links in nav bar
+  for (const guideEntry of document.querySelectorAll("ytd-guide-entry-renderer")) {
+    const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
 
-  for (const richSection of richSections) {
+    if (!ytFormattedString) {
+      continue;
+    }
+
+    if (ytFormattedString.innerText === "Home") {
+      guideEntry.style.display = options.homeCheckbox ? "block" : "none";
+    } else if (ytFormattedString.innerText === "Shorts") {
+      guideEntry.style.display = options.shortsCheckbox ? "block" : "none";
+    }
+  }
+
+  // links in collapsed nav bar
+  for (const miniGuideEntry of document.querySelectorAll("ytd-mini-guide-entry-renderer")) {
+    const span = miniGuideEntry.querySelector("span");
+
+    if (!span) {
+      continue;
+    }
+
+    if (span.innerText === "Home") {
+      miniGuideEntry.style.display = options.homeCheckbox ? "block" : "none";
+    } else if (span.innerText === "Shorts") {
+      miniGuideEntry.style.display = options.shortsCheckbox ? "block" : "none";
+    }
+  }
+
+  // breaking news and shorts on home/subscriptions pages
+  for (const richSection of document.querySelectorAll("ytd-rich-section-renderer")) {
     const span = richSection.querySelector("span");
 
-    if (span && span.innerText !== "Latest") {
-      richSection.style.display = richCheckbox ? "flex" : "none";
+    if (!span) {
+      continue;
+    }
+
+    if (span.innerText === "Breaking news") {
+      richSection.style.display = options.newsCheckbox ? "flex" : "none";
+    } else if (span.innerText === "Shorts") {
+      richSection.style.display = options.shortsCheckbox ? "flex" : "none";
     }
   }
 
-  const reelShelfs = document.querySelectorAll("ytd-reel-shelf-renderer");
-
-  for (const reelShelf of reelShelfs) {
-    reelShelf.style.display = richCheckbox ? "flex" : "none";
+  // shorts in search results
+  for (const reelShelf of document.querySelectorAll("ytd-reel-shelf-renderer")) {
+    reelShelf.style.display = options.shortsCheckbox ? "flex" : "none";
   }
 
-  // need to specify the class because sometimes youtube adds multiple elements with this id
+  // related videos column
+  // NB: need to specify the class because sometimes youtube adds multiple elements with this id
   const relatedVideos = document.querySelector("ytd-watch-flexy #secondary");
 
   if (relatedVideos) {
     const parent = relatedVideos.parentElement;
 
     parent.style.justifyContent = "center";
-    relatedVideos.style.display = relatedCheckbox ? "block" : "none";
+    relatedVideos.style.display = options.relatedCheckbox ? "block" : "none";
+  }
+
+  // links to shorts
+  for (const short of document.querySelectorAll("a[href*='/shorts']")) {
+    const videoRenderer = short.closest("ytd-video-renderer");
+
+    if (videoRenderer) {
+      videoRenderer.style.display = options.shortsCheckbox ? "block" : "none";
+    }
+  }
+
+  // video category pills
+  for (const chip of document.querySelectorAll("yt-chip-cloud-chip-renderer")) {
+    if (chip.innerText === "Shorts") {
+      chip.style.display = options.shortsCheckbox ? "inline-flex" : "none";
+    }
+  }
+
+  // profile tabs
+  for (const tab of document.querySelectorAll("yt-tab-shape")) {
+    if (tab.innerText === "Shorts") {
+      tab.style.display = options.shortsCheckbox ? "flex" : "none";
+    }
   }
 }
 
@@ -119,28 +148,21 @@ chrome.storage.onChanged.addListener((changes, area) => {
     return;
   }
 
-  if ('homeCheckbox' in changes) {
-    homeCheckbox = changes.homeCheckbox.newValue;
-  }
-
-  if ('richCheckbox' in changes) {
-    richCheckbox = changes.richCheckbox.newValue;
-  }
-
-  if ('relatedCheckbox' in changes) {
-    relatedCheckbox = changes.relatedCheckbox.newValue;
+  for (const key in options) {
+    if (key in changes) {
+      options[key] = changes[key].newValue;
+    }
   }
 
   clean();
 });
 
-chrome.storage.local.get([
-  'homeCheckbox',
-  'richCheckbox',
-  'relatedCheckbox',
-], (data) => {
-  homeCheckbox = data.homeCheckbox !== undefined ? data.homeCheckbox : true;
-  relatedCheckbox = data.relatedCheckbox || false;
-  richCheckbox = data.richCheckbox || false;
+chrome.storage.local.get(Object.keys(options), (data) => {
+  for (const key in options) {
+    if (data[key] !== undefined) {
+      options[key] = data[key];
+    }
+  }
+
   clean();
 });
