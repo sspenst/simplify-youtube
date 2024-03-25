@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./**/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'youtube-dark': '#0f0f0f',
+      },
+    },
   },
   plugins: [],
 }

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Minimal YouTube",
+  "name": "Simplify YouTube",
   "description": "Hide features you don't use",
   "version": "1.0.0",
   "action": {

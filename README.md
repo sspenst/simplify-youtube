@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="images/icon-48.png" alt="Minimal YouTube" />
+  <img src="images/icon-48.png" alt="Simplify YouTube" />
 </p>
 <h1 align="center">
-  Minimal YouTube
+  Simplify YouTube
 </h1>
 
 ### Hide features you don't use
