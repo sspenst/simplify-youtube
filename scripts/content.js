@@ -1,4 +1,5 @@
 let relatedCheckbox = false;
+let richCheckbox = false;
 
 function clean() {
   const guideEntries = document.querySelectorAll("ytd-guide-entry-renderer");
