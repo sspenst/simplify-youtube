@@ -1,10 +1,10 @@
 const options: Record<string, boolean> = {
-  homeCheckbox: true,
-  shortsCheckbox: false,
-  subscriptionsCheckbox: true,
-  commentsCheckbox: true,
-  relatedCheckbox: true,
-  newsCheckbox: false,
+  home: true,
+  shorts: false,
+  subscriptions: true,
+  comments: true,
+  related: true,
+  news: false,
 };
 
 let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null | undefined = undefined;
@@ -12,15 +12,15 @@ let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | 
 function countMajorSections() {
   let count = 0;
   
-  if (options.homeCheckbox) {
+  if (options.home) {
     count++;
   }
 
-  if (options.shortsCheckbox) {
+  if (options.shorts) {
     count++;
   }
 
-  if (options.subscriptionsCheckbox) {
+  if (options.subscriptions) {
     count++;
   }
 
@@ -33,11 +33,11 @@ function getLogoOnclick() {
     return null;
   }
 
-  if (options.homeCheckbox) {
+  if (options.home) {
     return originalLogoOnclick;
   }
 
-  if (options.subscriptionsCheckbox) {
+  if (options.subscriptions) {
     return (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
@@ -53,7 +53,7 @@ function getLogoOnclick() {
     };
   }
 
-  if (options.shortsCheckbox) {
+  if (options.shorts) {
     return (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
@@ -113,11 +113,11 @@ function clean() {
       }
   
       if (ytFormattedString.innerText === "Home") {
-        guideEntry.style.display = options.homeCheckbox ? "block" : "none";
+        guideEntry.style.display = options.home ? "block" : "none";
       } else if (ytFormattedString.innerText === "Shorts") {
-        guideEntry.style.display = options.shortsCheckbox ? "block" : "none";
+        guideEntry.style.display = options.shorts ? "block" : "none";
       } else if (ytFormattedString.innerText === "Subscriptions") {
-        guideEntry.style.display = options.subscriptionsCheckbox ? "block" : "none";
+        guideEntry.style.display = options.subscriptions ? "block" : "none";
       }
     }
   }
@@ -130,26 +130,9 @@ function clean() {
     }
 
     if (ytFormattedString.innerText === "Subscriptions") {
-      guideSection.style.display = options.subscriptionsCheckbox ? "block" : "none";
+      guideSection.style.display = options.subscriptions ? "block" : "none";
     } else if (ytFormattedString.innerText === "Explore") {
-      guideSection.style.display = options.homeCheckbox ? "block" : "none";
-    }
-  }
-
-  // links in collapsed nav bar
-  for (const miniGuideEntry of document.querySelectorAll("ytd-mini-guide-entry-renderer") as NodeListOf<HTMLElement>) {
-    const span = miniGuideEntry.querySelector("span");
-
-    if (!span) {
-      continue;
-    }
-
-    if (span.innerText === "Home") {
-      miniGuideEntry.style.display = options.homeCheckbox ? "block" : "none";
-    } else if (span.innerText === "Shorts") {
-      miniGuideEntry.style.display = options.shortsCheckbox ? "block" : "none";
-    } else if (span.innerText === "Subscriptions") {
-      miniGuideEntry.style.display = options.subscriptionsCheckbox ? "block" : "none";
+      guideSection.style.display = options.home ? "block" : "none";
     }
   }
 
@@ -162,15 +145,15 @@ function clean() {
     }
 
     if (span.innerText === "Breaking news") {
-      richSection.style.display = options.newsCheckbox ? "flex" : "none";
+      richSection.style.display = options.news ? "flex" : "none";
     } else if (span.innerText === "Shorts") {
-      richSection.style.display = options.shortsCheckbox ? "flex" : "none";
+      richSection.style.display = options.shorts ? "flex" : "none";
     }
   }
 
   // shorts in search results
   for (const reelShelf of document.querySelectorAll("ytd-reel-shelf-renderer") as NodeListOf<HTMLElement>) {
-    reelShelf.style.display = options.shortsCheckbox ? "flex" : "none";
+    reelShelf.style.display = options.shorts ? "flex" : "none";
   }
 
   // links to shorts
@@ -178,21 +161,21 @@ function clean() {
     const videoRenderer = short.closest("ytd-video-renderer") as HTMLElement | null;
 
     if (videoRenderer) {
-      videoRenderer.style.display = options.shortsCheckbox ? "block" : "none";
+      videoRenderer.style.display = options.shorts ? "block" : "none";
     }
   }
 
   // video category pills
   for (const chip of document.querySelectorAll("yt-chip-cloud-chip-renderer") as NodeListOf<HTMLElement>) {
     if (chip.innerText === "Shorts") {
-      chip.style.display = options.shortsCheckbox ? "inline-flex" : "none";
+      chip.style.display = options.shorts ? "inline-flex" : "none";
     }
   }
 
   // profile tabs
   for (const tab of document.querySelectorAll("yt-tab-shape") as NodeListOf<HTMLElement>) {
     if (tab.innerText === "Shorts") {
-      tab.style.display = options.shortsCheckbox ? "flex" : "none";
+      tab.style.display = options.shorts ? "flex" : "none";
     }
   }
 
@@ -211,6 +194,11 @@ function clean() {
     // we want to hide the entire secondary section if we can, but if show chat replay exists we can't
     let hideSecondary = true;
 
+    // TODO:
+    // ytd-playlist-panel-renderer check for any yt-formatted-string (or maybe any text at all?)
+    // some generic technique like that could work playlists, chat-container, and dontaion-shelf
+    // also need to figure out how to adjust the ux when the video is collapsed
+
     const chatContainer = secondary.querySelector("div#chat-container");
 
     if (chatContainer) {
@@ -221,18 +209,18 @@ function clean() {
       }
     }
 
-    secondary.style.display = options.relatedCheckbox || !hideSecondary ? "block" : "none";
+    secondary.style.display = options.related || !hideSecondary ? "block" : "none";
 
     const relatedVideos = document.getElementById("related");
     
     if (relatedVideos) {
-      relatedVideos.style.display = options.relatedCheckbox || hideSecondary ? "block" : "none";
+      relatedVideos.style.display = options.related || hideSecondary ? "block" : "none";
     }
   }
 
   // hide ytd-comments
   for (const comments of document.querySelectorAll("ytd-comments") as NodeListOf<HTMLElement>) {
-    comments.style.display = options.commentsCheckbox ? "block" : "none";
+    comments.style.display = options.comments ? "block" : "none";
   }
 }
 
@@ -243,12 +231,6 @@ function setupObserver() {
 }
 
 setupObserver();
-
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//   if (message.action === "clean") {
-//     clean();
-//   }
-// });
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') {

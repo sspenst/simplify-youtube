@@ -28,9 +28,12 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: 'src/manifest.json', to: 'manifest.json' },
-        { from: 'src/popup.html', to: 'popup.html' },
-        { from: 'src/img/*.png', to: 'img/[name].png' },
+        {
+          from: 'src',
+          globOptions: {
+            ignore: ['**/*.ts', '**/popup.css']
+          },
+        },
       ],
     }),
   ],
