@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
   mode: 'production',
   entry: {
-    content: './src/content.js',
+    content: './src/content.ts',
     popup: './src/popup.ts',
   },
   output: {
@@ -14,7 +14,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
@@ -34,12 +34,8 @@ module.exports = {
       ],
     }),
   ],
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].bundle.js',
-  },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.ts'],
   },
   watchOptions: {
     ignored: ['**/dist', '**/node_modules']

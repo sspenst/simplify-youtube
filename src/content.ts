@@ -1,4 +1,4 @@
-const options = {
+const options: Record<string, boolean> = {
   homeCheckbox: true,
   shortsCheckbox: false,
   subscriptionsCheckbox: true,
@@ -7,7 +7,7 @@ const options = {
   newsCheckbox: false,
 };
 
-let logoOnclick = undefined;
+let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null | undefined = undefined;
 
 function countMajorSections() {
   let count = 0;
@@ -28,16 +28,21 @@ function countMajorSections() {
 }
 
 function getLogoOnclick() {
+  // don't return anything until we have set the originalLogoOnclick
+  if (originalLogoOnclick === undefined) {
+    return null;
+  }
+
   if (options.homeCheckbox) {
-    return logoOnclick;
+    return originalLogoOnclick;
   }
 
   if (options.subscriptionsCheckbox) {
-    return (e) => {
+    return (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
 
-      const a = document.querySelector("a[href='/feed/subscriptions']");
+      const a = document.querySelector("a[href='/feed/subscriptions']") as HTMLAnchorElement | null;
 
       if (a) {
         a.click();
@@ -49,11 +54,11 @@ function getLogoOnclick() {
   }
 
   if (options.shortsCheckbox) {
-    return (e) => {
+    return (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
 
-      const a = document.querySelector("a[title='Shorts']");
+      const a = document.querySelector("a[title='Shorts']") as HTMLAnchorElement | null;
 
       if (a) {
         a.click();
@@ -64,28 +69,28 @@ function getLogoOnclick() {
     };
   }
 
-  return logoOnclick;
+  return originalLogoOnclick;
 }
 
 function clean() {
   // need to specify the class because there are multiple elements with this id
-  const logo = document.querySelector("a[id='logo']");
+  const logo = document.querySelector("a[id='logo']") as HTMLAnchorElement | null;
 
   if (logo) {
-    if (logoOnclick === undefined) {
-      logoOnclick = logo.onclick;
+    if (originalLogoOnclick === undefined) {
+      originalLogoOnclick = logo.onclick;
     }
 
     logo.onclick = getLogoOnclick();
   }
 
   // major sections in nav bar
-  const guideSections = document.querySelectorAll("ytd-guide-section-renderer")
+  const guideSections = document.querySelectorAll("ytd-guide-section-renderer") as NodeListOf<HTMLElement>;
 
   if (guideSections.length > 0) {
     // major links + you section
     const mainGuideSection = guideSections[0];
-    const you = mainGuideSection.querySelector("ytd-guide-collapsible-section-entry-renderer");
+    const you = mainGuideSection.querySelector("ytd-guide-collapsible-section-entry-renderer") as HTMLElement | null;
   
     if (you) {
       if (countMajorSections() === 0) {
@@ -100,8 +105,8 @@ function clean() {
     }
   
     // links in the main nav section
-    for (const guideEntry of mainGuideSection.querySelectorAll("ytd-guide-entry-renderer")) {
-      const ytFormattedString = guideEntry.querySelector("yt-formatted-string");
+    for (const guideEntry of mainGuideSection.querySelectorAll("ytd-guide-entry-renderer") as NodeListOf<HTMLElement>) {
+      const ytFormattedString = guideEntry.querySelector("yt-formatted-string") as HTMLElement | null;
   
       if (!ytFormattedString) {
         continue;
@@ -118,7 +123,7 @@ function clean() {
   }
 
   for (const guideSection of guideSections) {
-    const ytFormattedString = guideSection.querySelector("yt-formatted-string");
+    const ytFormattedString = guideSection.querySelector("yt-formatted-string") as HTMLElement | null;
 
     if (!ytFormattedString) {
       continue;
@@ -132,7 +137,7 @@ function clean() {
   }
 
   // links in collapsed nav bar
-  for (const miniGuideEntry of document.querySelectorAll("ytd-mini-guide-entry-renderer")) {
+  for (const miniGuideEntry of document.querySelectorAll("ytd-mini-guide-entry-renderer") as NodeListOf<HTMLElement>) {
     const span = miniGuideEntry.querySelector("span");
 
     if (!span) {
@@ -149,7 +154,7 @@ function clean() {
   }
 
   // breaking news and shorts on home/subscriptions pages
-  for (const richSection of document.querySelectorAll("ytd-rich-section-renderer")) {
+  for (const richSection of document.querySelectorAll("ytd-rich-section-renderer") as NodeListOf<HTMLElement>) {
     const span = richSection.querySelector("span");
 
     if (!span) {
@@ -164,13 +169,13 @@ function clean() {
   }
 
   // shorts in search results
-  for (const reelShelf of document.querySelectorAll("ytd-reel-shelf-renderer")) {
+  for (const reelShelf of document.querySelectorAll("ytd-reel-shelf-renderer") as NodeListOf<HTMLElement>) {
     reelShelf.style.display = options.shortsCheckbox ? "flex" : "none";
   }
 
   // links to shorts
   for (const short of document.querySelectorAll("a[href*='/shorts']")) {
-    const videoRenderer = short.closest("ytd-video-renderer");
+    const videoRenderer = short.closest("ytd-video-renderer") as HTMLElement | null;
 
     if (videoRenderer) {
       videoRenderer.style.display = options.shortsCheckbox ? "block" : "none";
@@ -178,14 +183,14 @@ function clean() {
   }
 
   // video category pills
-  for (const chip of document.querySelectorAll("yt-chip-cloud-chip-renderer")) {
+  for (const chip of document.querySelectorAll("yt-chip-cloud-chip-renderer") as NodeListOf<HTMLElement>) {
     if (chip.innerText === "Shorts") {
       chip.style.display = options.shortsCheckbox ? "inline-flex" : "none";
     }
   }
 
   // profile tabs
-  for (const tab of document.querySelectorAll("yt-tab-shape")) {
+  for (const tab of document.querySelectorAll("yt-tab-shape") as NodeListOf<HTMLElement>) {
     if (tab.innerText === "Shorts") {
       tab.style.display = options.shortsCheckbox ? "flex" : "none";
     }
@@ -193,12 +198,16 @@ function clean() {
 
   // related videos column
   // need to specify the class because sometimes youtube adds multiple elements with this id
-  const secondary = document.querySelector("ytd-watch-flexy #secondary");
+  const secondary = document.querySelector("ytd-watch-flexy #secondary") as HTMLElement | null;
 
   if (secondary) {
     // has no visible effect unless we hide secondary, so we can always set this
     const parent = secondary.parentElement;
-    parent.style.justifyContent = "center";
+
+    if (parent) {
+      parent.style.justifyContent = "center";
+    }
+
     // we want to hide the entire secondary section if we can, but if show chat replay exists we can't
     let hideSecondary = true;
 
@@ -222,7 +231,7 @@ function clean() {
   }
 
   // hide ytd-comments
-  for (const comments of document.querySelectorAll("ytd-comments")) {
+  for (const comments of document.querySelectorAll("ytd-comments") as NodeListOf<HTMLElement>) {
     comments.style.display = options.commentsCheckbox ? "block" : "none";
   }
 }
