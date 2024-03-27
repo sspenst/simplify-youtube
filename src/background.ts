@@ -1,8 +1,14 @@
-function updateCSS(tabId: number, items: { [key: string]: boolean; }) {
-  for (const key in items) {
+chrome.runtime.onMessage.addListener((message, sender, _) => {
+  if (sender.tab?.id === undefined) {
+    return;
+  }
+
+  const tabId = sender.tab.id;
+
+  for (const key in message) {
     const cssFile = `./css/${key}.css`;
 
-    if (items[key]) {
+    if (message[key]) {
       chrome.scripting.removeCSS({
         target: { tabId: tabId },
         files: [cssFile],
@@ -13,22 +19,5 @@ function updateCSS(tabId: number, items: { [key: string]: boolean; }) {
         files: [cssFile],
       });
     }
-  }
-}
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.init) {
-    if (sender.tab?.id !== undefined) {
-      updateCSS(sender.tab.id, message.init);
-    }
-  } else if (message.set) {
-    chrome.storage.local.set(message.set);
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length === 0 || tabs[0].id === undefined) {
-        return;
-      }
-
-      updateCSS(tabs[0].id, message.set);
-    });
   }
 });

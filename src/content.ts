@@ -1,4 +1,4 @@
-const options: Record<string, boolean> = {
+const prefs: Record<string, boolean> = {
   comments: true,
   home: true,
   news: false,
@@ -12,15 +12,15 @@ let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | 
 function countMajorSections() {
   let count = 0;
   
-  if (options.home) {
+  if (prefs.home) {
     count++;
   }
 
-  if (options.shorts) {
+  if (prefs.shorts) {
     count++;
   }
 
-  if (options.subscriptions) {
+  if (prefs.subscriptions) {
     count++;
   }
 
@@ -33,11 +33,11 @@ function getLogoOnclick() {
     return null;
   }
 
-  if (options.home) {
+  if (prefs.home) {
     return originalLogoOnclick;
   }
 
-  if (options.subscriptions) {
+  if (prefs.subscriptions) {
     return (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
@@ -53,7 +53,7 @@ function getLogoOnclick() {
     };
   }
 
-  if (options.shorts) {
+  if (prefs.shorts) {
     return (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
@@ -106,36 +106,32 @@ function clean() {
   }
 }
 
-function setupObserver() {
-  const observer = new MutationObserver(clean);
-  
-  observer.observe(document.body, { childList: true, subtree: true });  
-}
-
-setupObserver();
-
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local') {
     return;
   }
 
-  for (const key in options) {
+  const updates: Record<string, boolean> = {};
+
+  for (const key in prefs) {
     if (key in changes) {
-      options[key] = changes[key].newValue;
+      updates[key] = prefs[key] = changes[key].newValue;
     }
   }
+
+  chrome.runtime.sendMessage(updates);
 
   clean();
 });
 
-chrome.storage.local.get(Object.keys(options), (data) => {
-  for (const key in options) {
+chrome.storage.local.get(Object.keys(prefs), (data) => {
+  for (const key in prefs) {
     if (data[key] !== undefined) {
-      options[key] = data[key];
+      prefs[key] = data[key];
     }
   }
 
-  chrome.runtime.sendMessage({ 'init': options });
+  chrome.runtime.sendMessage(prefs);
 
   clean();
 });

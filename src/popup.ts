@@ -1,6 +1,6 @@
 import './popup.css';
 
-const optionDefaults: Record<string, boolean> = {
+const defaultPrefs: Record<string, boolean> = {
   comments: true,
   home: true,
   news: false,
@@ -10,20 +10,18 @@ const optionDefaults: Record<string, boolean> = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  chrome.storage.local.get(Object.keys(optionDefaults), (data) => {
-    for (const key in optionDefaults) {
+  chrome.storage.local.get(Object.keys(defaultPrefs), (data) => {
+    for (const key in defaultPrefs) {
       const element = document.getElementById(key) as HTMLInputElement | null;
 
       if (!element) {
         continue;
       }
 
-      element.checked = data[key] !== undefined ? data[key] : optionDefaults[key];
+      element.checked = data[key] !== undefined ? data[key] : defaultPrefs[key];
 
-      function changeListener(this: HTMLInputElement, e: Event) {
-        const items = { [key]: this.checked };
-
-        chrome.runtime.sendMessage({ 'set': items });
+      function changeListener(this: HTMLInputElement, _: Event) {
+        chrome.storage.local.set({ [key]: this.checked });
       }
 
       element.addEventListener('change', changeListener);
