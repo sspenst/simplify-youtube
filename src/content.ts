@@ -103,37 +103,6 @@ function clean() {
         you.style.paddingTop = "12px";
       }
     }
-  
-    // links in the main nav section
-    for (const guideEntry of mainGuideSection.querySelectorAll("ytd-guide-entry-renderer") as NodeListOf<HTMLElement>) {
-      const ytFormattedString = guideEntry.querySelector("yt-formatted-string") as HTMLElement | null;
-  
-      if (!ytFormattedString) {
-        continue;
-      }
-  
-      if (ytFormattedString.innerText === "Home") {
-        guideEntry.style.display = options.home ? "block" : "none";
-      } else if (ytFormattedString.innerText === "Shorts") {
-        guideEntry.style.display = options.shorts ? "block" : "none";
-      } else if (ytFormattedString.innerText === "Subscriptions") {
-        guideEntry.style.display = options.subscriptions ? "block" : "none";
-      }
-    }
-  }
-
-  for (const guideSection of guideSections) {
-    const ytFormattedString = guideSection.querySelector("yt-formatted-string") as HTMLElement | null;
-
-    if (!ytFormattedString) {
-      continue;
-    }
-
-    if (ytFormattedString.innerText === "Subscriptions") {
-      guideSection.style.display = options.subscriptions ? "block" : "none";
-    } else if (ytFormattedString.innerText === "Explore") {
-      guideSection.style.display = options.home ? "block" : "none";
-    }
   }
 
   // breaking news and shorts on home/subscriptions pages

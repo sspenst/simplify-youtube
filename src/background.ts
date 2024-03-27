@@ -1,13 +1,3 @@
-const optionDefaults: Record<string, boolean> = {
-  home: true,
-  shorts: false,
-  subscriptions: true,
-  comments: true,
-  related: true,
-  news: false,
-};
-
-// insert or remove css files
 function updateCSS(tabId: number, items: { [key: string]: boolean; }) {
   for (const key in items) {
     const cssFile = `./css/${key}.css`;
