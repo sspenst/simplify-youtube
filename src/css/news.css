@@ -1,0 +1,3 @@
+ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[elements-per-row]:not([is-shorts])) {
+  display: none !important;
+}

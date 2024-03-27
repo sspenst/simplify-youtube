@@ -9,6 +9,5 @@
 - Home
 - Shorts
 - Subscriptions
-- Comments
-- Related videos
 - Breaking news
+- Comments

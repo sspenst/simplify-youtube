@@ -1,12 +1,12 @@
 import './popup.css';
 
 const optionDefaults: Record<string, boolean> = {
+  comments: true,
   home: true,
+  news: false,
+  secondary: true,
   shorts: false,
   subscriptions: true,
-  comments: true,
-  related: true,
-  news: false,
 };
 
 document.addEventListener("DOMContentLoaded", () => {
