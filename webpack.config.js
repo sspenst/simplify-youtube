@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
   mode: 'production',
   entry: {
+    background: './src/background.ts',
     content: './src/content.ts',
     popup: './src/popup.ts',
   },
@@ -31,7 +32,11 @@ module.exports = {
         {
           from: 'src',
           globOptions: {
-            ignore: ['**/*.ts', '**/popup.css']
+            ignore: [
+              '**/*.ts',
+              '**/*.svg',
+              '**/popup.css',
+            ]
           },
         },
       ],

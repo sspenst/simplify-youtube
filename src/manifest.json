@@ -23,10 +23,16 @@
     "scripting",
     "storage"
   ],
+  "background": {
+    "service_worker": "background.bundle.js"
+  },
   "content_scripts": [
     {
-      "js": ["./content.bundle.js"],
+      "js": ["content.bundle.js"],
       "matches": ["https://www.youtube.com/*"]
     }
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*"
   ]
 }

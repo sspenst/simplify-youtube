@@ -253,5 +253,7 @@ chrome.storage.local.get(Object.keys(options), (data) => {
     }
   }
 
+  chrome.runtime.sendMessage({ 'init': options });
+
   clean();
 });
