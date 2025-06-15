@@ -6,7 +6,7 @@
     <title>Simplify YouTube</title>
     <script src="./popup.bundle.js"></script>
   </head>
-  <body class="px-3 py-2 flex flex-col gap-2 w-40 dark:bg-youtube-dark bg-white dark:text-white text-black select-none text-center text-sm">
+  <body class="px-3 py-2 flex flex-col gap-2 w-44 dark:bg-youtube-dark bg-white dark:text-white text-black select-none text-center text-sm">
     <div class="flex justify-center gap-2 mb-1">
       <div class="w-6 h-6 text-neutral-500 hover:text-black dark:hover:text-white transition">
         <svg xmlns="http://www.w3.org/2000/svg" height="128" viewBox="0 0 24 24" width="128" focusable="false" style="pointer-events: none; display: inherit; width: 100%; height: 100%;">
@@ -78,6 +78,10 @@
       <input type="checkbox" id="home" />
       <label for="home">Home</label>
     </div>
+    <div class="flex gap-2 ml-4">
+      <input type="checkbox" id="news" />
+      <label for="news">Breaking news</label>
+    </div>
     <div class="flex gap-2">
       <input type="checkbox" id="shorts" />
       <label for="shorts">Shorts</label>
@@ -87,8 +91,12 @@
       <label for="subscriptions">Subscriptions</label>
     </div>
     <div class="flex gap-2">
-      <input type="checkbox" id="news" />
-      <label for="news">Breaking news</label>
+      <input type="checkbox" id="explore" />
+      <label for="explore">Explore</label>
+    </div>
+    <div class="flex gap-2">
+      <input type="checkbox" id="morefromyoutube" />
+      <label for="morefromyoutube">More from YouTube</label>
     </div>
     <div class="flex gap-2">
       <input type="checkbox" id="comments" />

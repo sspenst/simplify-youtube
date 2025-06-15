@@ -1,11 +1,6 @@
-const prefs: Record<string, boolean> = {
-  comments: true,
-  home: true,
-  news: false,
-  secondary: true,
-  shorts: false,
-  subscriptions: true,
-};
+import { getDefaultPreferences } from './prefs';
+
+const prefs: Record<string, boolean> = getDefaultPreferences();
 
 let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null | undefined = undefined;
 

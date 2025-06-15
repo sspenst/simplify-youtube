@@ -1,13 +1,7 @@
 import './popup.css';
+import { getDefaultPreferences } from './prefs';
 
-const defaultPrefs: Record<string, boolean> = {
-  comments: true,
-  home: true,
-  news: false,
-  secondary: true,
-  shorts: false,
-  subscriptions: true,
-};
+const defaultPrefs: Record<string, boolean> = getDefaultPreferences();
 
 document.addEventListener("DOMContentLoaded", () => {
   chrome.storage.local.get(Object.keys(defaultPrefs), (data) => {

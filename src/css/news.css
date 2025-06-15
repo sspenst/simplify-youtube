@@ -1,3 +1,3 @@
-ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[elements-per-row]:not([is-shorts])) {
+ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[elements-per-row]:not([is-shorts]):not([has-chevron-buttons]):not([hide-bottom-divider])) {
   display: none !important;
 }
