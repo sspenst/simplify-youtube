@@ -8,6 +8,7 @@ export const CSS_FILES: Record<string, boolean> = {
   secondary: true,
   shorts: false,
   subscriptions: true,
+  voice: true,
 };
 
 // Get all CSS files that should be enabled by default
