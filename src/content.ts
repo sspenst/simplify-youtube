@@ -82,21 +82,23 @@ function clean() {
   // major sections in nav bar
   const guideSections = document.querySelectorAll("ytd-guide-section-renderer") as NodeListOf<HTMLElement>;
 
-  if (guideSections.length > 0) {
-    // major links + you section
-    const mainGuideSection = guideSections[0];
-    const you = mainGuideSection.querySelector("ytd-guide-collapsible-section-entry-renderer") as HTMLElement | null;
-  
-    if (you) {
-      if (countMajorSections() === 0) {
-        you.style.marginTop = "0";
-        you.style.borderTopWidth = "0";
-        you.style.paddingTop = "0";
-      } else {
-        you.style.marginTop = "12px";
-        you.style.borderTopWidth = "1px";
-        you.style.paddingTop = "12px";
-      }
+  if (guideSections.length < 2) {
+    return;
+  }
+
+  // major links + you section
+  const mainGuideSection = guideSections[0];
+  const you = mainGuideSection.querySelector("ytd-guide-collapsible-section-entry-renderer") as HTMLElement | null;
+
+  if (you) {
+    if (countMajorSections() === 0) {
+      you.style.marginTop = "0";
+      you.style.borderTopWidth = "0";
+      you.style.paddingTop = "0";
+    } else {
+      you.style.marginTop = "12px";
+      you.style.borderTopWidth = "1px";
+      you.style.paddingTop = "12px";
     }
   }
 }
