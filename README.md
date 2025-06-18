@@ -9,6 +9,9 @@
 - Home
 - Shorts
 - Subscriptions
+- Explore
+- More from YouTube
+- Voice search
 - Breaking news
 - Comments
 
