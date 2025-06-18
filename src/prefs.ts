@@ -3,10 +3,9 @@ export const CSS_FILES: Record<string, boolean> = {
   comments: true,
   explore: true,
   home: true,
-  morefromyoutube: true,
-  news: false,
-  secondary: true,
-  shorts: false,
+  more: true,
+  news: true,
+  shorts: true,
   subscriptions: true,
   voice: true,
 };
