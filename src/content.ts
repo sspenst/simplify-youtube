@@ -1,6 +1,12 @@
-import { getDefaultPreferences } from './prefs';
+import { getDefaultPreferences, calculateBorderPreferences, BORDER_CSS_FILES } from './prefs';
 
 const prefs: Record<string, boolean> = getDefaultPreferences();
+let currentBorderPrefs: Record<string, boolean> = {};
+
+// Initialize border preferences to default state (all true = no border removal)
+for (const borderFile of BORDER_CSS_FILES) {
+  currentBorderPrefs[borderFile] = true;
+}
 
 let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null | undefined = undefined;
 
@@ -75,6 +81,14 @@ chrome.storage.onChanged.addListener((changes, area) => {
     }
   }
 
+  // Calculate new border preferences and only include changes
+  const newBorderPrefs = calculateBorderPreferences(prefs);
+  for (const borderKey in newBorderPrefs) {
+    if (newBorderPrefs[borderKey] !== currentBorderPrefs[borderKey]) {
+      updates[borderKey] = currentBorderPrefs[borderKey] = newBorderPrefs[borderKey];
+    }
+  }
+
   chrome.runtime.sendMessage(updates);
 
   clean();
@@ -87,7 +101,11 @@ chrome.storage.local.get(Object.keys(prefs), (data) => {
     }
   }
 
-  chrome.runtime.sendMessage(prefs);
+  // Calculate and set initial border preferences
+  currentBorderPrefs = calculateBorderPreferences(prefs);
+  const allPrefs = { ...prefs, ...currentBorderPrefs };
+
+  chrome.runtime.sendMessage(allPrefs);
 
   clean();
 });

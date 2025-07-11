@@ -1,0 +1,7 @@
+ytd-guide-section-renderer:nth-of-type(5) {
+  display: none !important;
+}
+
+div#footer {
+  display: none !important;
+}
