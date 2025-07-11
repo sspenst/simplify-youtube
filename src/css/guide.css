@@ -1,0 +1,16 @@
+yt-icon-button#guide-button {
+  display: none !important;
+}
+
+tp-yt-app-drawer {
+  display: none !important;
+}
+
+ytd-mini-guide-renderer {
+  display: none !important;
+}
+
+ytd-page-manager:has(ytd-browse[mini-guide-visible]),
+ytd-page-manager:has(ytd-browse[guide-persistent-and-visible]) {
+  margin-left: 16px !important;
+}

@@ -6,15 +6,22 @@
 </h1>
 
 ### Hide features you don't use
+- Guide
 - Home
 - Shorts
 - Subscriptions
 - You
+- History
+- Playlists
+- Watch Later
+- Liked Videos
+- Subscriptions Title
 - Explore
-- More from YouTube
-- Voice search
-- Breaking news
+- More From YouTube
+- Voice Search
+- Breaking News
 - Comments
+- Footer
 
 ## Documentation
 

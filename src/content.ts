@@ -1,11 +1,11 @@
-import { getDefaultPreferences, calculateBorderPreferences, BORDER_CSS_FILES } from './prefs';
+import { getDefaultPreferences, calculateDynamicPreferences, DYNAMIC_CSS_FILES } from './prefs';
 
 const prefs: Record<string, boolean> = getDefaultPreferences();
-let currentBorderPrefs: Record<string, boolean> = {};
+let dynamicPrefs: Record<string, boolean> = {};
 
-// Initialize border preferences to default state (all true = no border removal)
-for (const borderFile of BORDER_CSS_FILES) {
-  currentBorderPrefs[borderFile] = true;
+// Initialize dynamic preferences to default state
+for (const dynamicFile of DYNAMIC_CSS_FILES) {
+  dynamicPrefs[dynamicFile] = true;
 }
 
 let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null | undefined = undefined;
@@ -81,11 +81,12 @@ chrome.storage.onChanged.addListener((changes, area) => {
     }
   }
 
-  // Calculate new border preferences and only include changes
-  const newBorderPrefs = calculateBorderPreferences(prefs);
-  for (const borderKey in newBorderPrefs) {
-    if (newBorderPrefs[borderKey] !== currentBorderPrefs[borderKey]) {
-      updates[borderKey] = currentBorderPrefs[borderKey] = newBorderPrefs[borderKey];
+  // Calculate new dynamic preferences and only include changes
+  const newDynamicPrefs = calculateDynamicPreferences(prefs);
+
+  for (const dynamicKey in newDynamicPrefs) {
+    if (newDynamicPrefs[dynamicKey] !== dynamicPrefs[dynamicKey]) {
+      updates[dynamicKey] = dynamicPrefs[dynamicKey] = newDynamicPrefs[dynamicKey];
     }
   }
 
@@ -101,9 +102,10 @@ chrome.storage.local.get(Object.keys(prefs), (data) => {
     }
   }
 
-  // Calculate and set initial border preferences
-  currentBorderPrefs = calculateBorderPreferences(prefs);
-  const allPrefs = { ...prefs, ...currentBorderPrefs };
+  // Calculate and set initial dynamic preferences
+  dynamicPrefs = calculateDynamicPreferences(prefs);
+
+  const allPrefs = { ...prefs, ...dynamicPrefs };
 
   chrome.runtime.sendMessage(allPrefs);
 

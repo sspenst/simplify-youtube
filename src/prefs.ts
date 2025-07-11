@@ -1,8 +1,10 @@
 // Auto-discovered CSS files with their default enabled state
 export const CSS_FILES: Record<string, boolean> = {
+  guide: true,
   home: true,
   shorts: true,
   subscriptions: true,
+  'subscriptions-title': true,
   you: true,
   history: true,
   playlists: true,
@@ -16,9 +18,10 @@ export const CSS_FILES: Record<string, boolean> = {
   footer: true,
 };
 
-// Border CSS files are calculated dynamically, not stored in preferences
-export const BORDER_CSS_FILES = [
+// Dynamic CSS files not stored in preferences
+export const DYNAMIC_CSS_FILES = [
   'you-border',
+  'you-padding',
   'subscriptions-border', 
   'explore-border',
   'more-border',
@@ -29,13 +32,13 @@ export function getDefaultPreferences(): Record<string, boolean> {
   return { ...CSS_FILES };
 }
 
-// Calculate which border CSS should be active based on current preferences
-export function calculateBorderPreferences(prefs: Record<string, boolean>): Record<string, boolean> {
-  const borderPrefs: Record<string, boolean> = {};
+// Calculate which dynamic CSS should be active based on current preferences
+export function calculateDynamicPreferences(prefs: Record<string, boolean>): Record<string, boolean> {
+  const dynamicPrefs: Record<string, boolean> = {};
   
-  // Initialize all border prefs to true (no border removal by default)
-  for (const borderFile of BORDER_CSS_FILES) {
-    borderPrefs[borderFile] = true;
+  // Initialize all dynamic prefs to true
+  for (const dynamicFile of DYNAMIC_CSS_FILES) {
+    dynamicPrefs[dynamicFile] = true;
   }
 
   // Only apply border removal when footer is hidden
@@ -44,18 +47,23 @@ export function calculateBorderPreferences(prefs: Record<string, boolean>): Reco
     // Remember: true = section is visible, false = section is hidden
     if (prefs.more) {
       // More section is visible, so it's the bottom - remove its border
-      borderPrefs['more-border'] = false;
+      dynamicPrefs['more-border'] = false;
     } else if (prefs.explore) {
       // More is hidden, explore is visible, so explore is the bottom
-      borderPrefs['explore-border'] = false;
+      dynamicPrefs['explore-border'] = false;
     } else if (prefs.subscriptions) {
       // More and explore are hidden, subscriptions is visible, so subscriptions is the bottom
-      borderPrefs['subscriptions-border'] = false;
+      dynamicPrefs['subscriptions-border'] = false;
     } else {
       // Only you section is visible, so it's the bottom
-      borderPrefs['you-border'] = false;
+      dynamicPrefs['you-border'] = false;
     }
   }
 
-  return borderPrefs;
+  if (!prefs['subscriptions-title'] && prefs.subscriptions) {
+    dynamicPrefs['you-border'] = false;
+    dynamicPrefs['you-padding'] = false;
+  }
+
+  return dynamicPrefs;
 }

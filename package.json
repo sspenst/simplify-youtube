@@ -1,13 +1,13 @@
 {
   "name": "simplify-youtube",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Simplify YouTube - Hide features you don't use",
   "scripts": {
     "build": "webpack --config webpack.config.js --watch"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.10",
-    "@types/chrome": "^0.0.326",
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/chrome": "^0.0.332",
     "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.2",
     "cssnano": "^7.0.7",
@@ -17,7 +17,7 @@
     "tailwindcss": "^4.1.10",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
-    "webpack": "^5.99.9",
+    "webpack": "^5.100.0",
     "webpack-cli": "^6.0.1"
   }
 }
