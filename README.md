@@ -9,6 +9,7 @@
 - Home
 - Shorts
 - Subscriptions
+- You
 - Explore
 - More from YouTube
 - Voice search
@@ -17,10 +18,13 @@
 
 ## Documentation
 
-### `popup.ts`
+### `css/`
 
-- The popup allows you to view and update your preferences
-- Preferences are stored globally with `chrome.storage.local.set`
+- One CSS file exists for each preference in `popup.html`
+
+### `background.ts`
+
+- The service worker listens for messages from content scripts and inserts or removes CSS files as needed
 
 ### `content.ts`
 
@@ -28,10 +32,11 @@
 - When preferences are updated, a message is sent to the background worker from each content script
 - JavaScript is executed to update the DOM when CSS is not enough
 
-### `background.ts`
+### `prefs.ts`
 
-- The service worker listens for messages from content scripts and inserts or removes CSS files as needed
+- The default set of preferences
 
-### `css/`
+### `popup.ts`
 
-- One CSS file exists for each preference in `popup.html`
+- The popup allows you to view and update your preferences
+- Preferences are stored globally with `chrome.storage.local.set`

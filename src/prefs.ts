@@ -1,13 +1,14 @@
 // Auto-discovered CSS files with their default enabled state
 export const CSS_FILES: Record<string, boolean> = {
-  comments: true,
-  explore: true,
   home: true,
-  more: true,
-  news: true,
   shorts: true,
   subscriptions: true,
+  you: true,
+  explore: true,
+  more: true,
   voice: true,
+  news: true,
+  comments: true,
 };
 
 // Get all CSS files that should be enabled by default

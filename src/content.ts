@@ -4,24 +4,6 @@ const prefs: Record<string, boolean> = getDefaultPreferences();
 
 let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null | undefined = undefined;
 
-function countMajorSections() {
-  let count = 0;
-  
-  if (prefs.home) {
-    count++;
-  }
-
-  if (prefs.shorts) {
-    count++;
-  }
-
-  if (prefs.subscriptions) {
-    count++;
-  }
-
-  return count;
-}
-
 function getLogoOnclick() {
   // don't return anything until we have set the originalLogoOnclick
   if (originalLogoOnclick === undefined) {
@@ -77,29 +59,6 @@ function clean() {
     }
 
     logo.onclick = getLogoOnclick();
-  }
-
-  // major sections in nav bar
-  const guideSections = document.querySelectorAll("ytd-guide-section-renderer") as NodeListOf<HTMLElement>;
-
-  if (guideSections.length < 2) {
-    return;
-  }
-
-  // major links + you section
-  const mainGuideSection = guideSections[0];
-  const you = mainGuideSection.querySelector("ytd-guide-collapsible-section-entry-renderer") as HTMLElement | null;
-
-  if (you) {
-    if (countMajorSections() === 0) {
-      you.style.marginTop = "0";
-      you.style.borderTopWidth = "0";
-      you.style.paddingTop = "0";
-    } else {
-      you.style.marginTop = "12px";
-      you.style.borderTopWidth = "1px";
-      you.style.paddingTop = "12px";
-    }
   }
 }
 
