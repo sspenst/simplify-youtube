@@ -10,6 +10,7 @@ export const CSS_FILES: Record<string, boolean> = {
   playlists: true,
   'watch-later': true,
   'liked-videos': true,
+  'your-clips': true,
   explore: true,
   more: true,
   voice: true,

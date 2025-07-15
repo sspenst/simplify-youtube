@@ -13,13 +13,14 @@
 - You
 - History
 - Playlists
-- Watch Later
-- Liked Videos
-- Subscriptions Title
+- Watch later
+- Liked videos
+- Your clips
+- Subscriptions title
 - Explore
-- More From YouTube
-- Voice Search
-- Breaking News
+- More from YouTube
+- Voice search
+- Breaking news
 - Comments
 - Footer
 
