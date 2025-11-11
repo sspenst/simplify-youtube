@@ -8,7 +8,7 @@ for (const dynamicFile of DYNAMIC_CSS_FILES) {
   dynamicPrefs[dynamicFile] = true;
 }
 
-let originalLogoOnclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null | undefined = undefined;
+let originalLogoOnclick: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null | undefined = undefined;
 
 function getLogoOnclick() {
   // don't return anything until we have set the originalLogoOnclick
@@ -20,24 +20,8 @@ function getLogoOnclick() {
     return originalLogoOnclick;
   }
 
-  if (prefs.subscriptions) {
-    return (e: MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const a = document.querySelector("a[href='/feed/subscriptions']") as HTMLAnchorElement | null;
-
-      if (a) {
-        a.click();
-      } else {
-        // subscriptions link may not be available if we haven't opened the guide yet
-        window.location.href = "/feed/subscriptions";
-      }
-    };
-  }
-
   if (prefs.shorts) {
-    return (e: MouseEvent) => {
+    return (e: PointerEvent) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -48,6 +32,22 @@ function getLogoOnclick() {
       } else {
         // shorts link may not be available if we haven't opened the guide yet
         window.location.href = "/shorts";
+      }
+    };
+  }
+
+  if (prefs.subscriptions) {
+    return (e: PointerEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const a = document.querySelector("a[href='/feed/subscriptions']") as HTMLAnchorElement | null;
+
+      if (a) {
+        a.click();
+      } else {
+        // subscriptions link may not be available if we haven't opened the guide yet
+        window.location.href = "/feed/subscriptions";
       }
     };
   }

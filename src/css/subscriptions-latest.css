@@ -1,0 +1,3 @@
+ytd-rich-section-renderer:has(ytd-shelf-renderer[thumbnail-style]) {
+  display: none !important;
+}
