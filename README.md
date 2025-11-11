@@ -20,6 +20,8 @@
 - Explore
 - More from YouTube
 - Voice search
+- Chips
+- Subscriptions latest
 - Breaking news
 - Comments
 - Footer
