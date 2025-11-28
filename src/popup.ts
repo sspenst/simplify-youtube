@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         continue;
       }
 
-      element.checked = data[key] !== undefined ? data[key] : defaultPrefs[key];
+      element.checked = data[key] !== undefined ? (data[key] as boolean) : defaultPrefs[key];
 
       function changeListener(this: HTMLInputElement, _: Event) {
         chrome.storage.local.set({ [key]: this.checked });

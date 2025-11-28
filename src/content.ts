@@ -77,7 +77,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
 
   for (const key in prefs) {
     if (key in changes) {
-      updates[key] = prefs[key] = changes[key].newValue;
+      updates[key] = prefs[key] = changes[key].newValue as boolean;
     }
   }
 
@@ -98,7 +98,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
 chrome.storage.local.get(Object.keys(prefs), (data) => {
   for (const key in prefs) {
     if (data[key] !== undefined) {
-      prefs[key] = data[key];
+      prefs[key] = data[key] as boolean;
     }
   }
 
