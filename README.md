@@ -20,7 +20,7 @@
 - Explore
 - More from YouTube
 - Voice search
-- Chips
+- Filter buttons
 - Subscriptions latest
 - Breaking news
 - Comments

@@ -14,7 +14,7 @@ export const CSS_FILES: Record<string, boolean> = {
   explore: true,
   more: true,
   voice: true,
-  chips: true,
+  'filter-buttons': true,
   'subscriptions-latest': true,
   news: true,
   comments: true,
