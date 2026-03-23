@@ -1,6 +1,6 @@
 {
   "name": "simplify-youtube",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Simplify YouTube - Hide features you don't use",
   "scripts": {
     "build": "webpack --config webpack.config.js --watch"
