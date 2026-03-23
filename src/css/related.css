@@ -1,0 +1,3 @@
+div#columns > div#secondary {
+  display: none !important;
+}
