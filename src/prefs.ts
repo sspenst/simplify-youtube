@@ -4,28 +4,30 @@ export const CSS_FILES: Record<string, boolean> = {
   home: true,
   shorts: true,
   subscriptions: true,
+  channels: true,
   you: true,
   history: true,
   playlists: true,
   'watch-later': true,
   'liked-videos': true,
   'your-clips': true,
-  'subscriptions-title': true,
   explore: true,
   more: true,
   voice: true,
   'filter-buttons': true,
-  'subscriptions-latest': true,
   news: true,
+  'subscriptions-latest': true,
   comments: true,
+  related: true,
   footer: true,
 };
 
 // Dynamic CSS files not stored in preferences
 export const DYNAMIC_CSS_FILES = [
-  'you-border',
-  'you-padding',
+  'home-shorts',
+  'home-shorts-border',
   'subscriptions-border', 
+  'you-border',
   'explore-border',
   'more-border',
 ];
@@ -54,18 +56,19 @@ export function calculateDynamicPreferences(prefs: Record<string, boolean>): Rec
     } else if (prefs.explore) {
       // More is hidden, explore is visible, so explore is the bottom
       dynamicPrefs['explore-border'] = false;
+    } else if (prefs.you) {
+      dynamicPrefs['you-border'] = false;
     } else if (prefs.subscriptions) {
       // More and explore are hidden, subscriptions is visible, so subscriptions is the bottom
       dynamicPrefs['subscriptions-border'] = false;
     } else {
       // Only you section is visible, so it's the bottom
-      dynamicPrefs['you-border'] = false;
+      dynamicPrefs['home-shorts-border'] = false;
     }
   }
 
-  if (!prefs['subscriptions-title'] && prefs.subscriptions) {
-    dynamicPrefs['you-border'] = false;
-    dynamicPrefs['you-padding'] = false;
+  if (!prefs.home && !prefs.shorts) {
+    dynamicPrefs['home-shorts'] = false;
   }
 
   return dynamicPrefs;

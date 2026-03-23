@@ -1,0 +1,7 @@
+ytd-guide-section-renderer:nth-of-type(2) > div#items > ytd-guide-entry-renderer {
+  display: none !important;
+}
+
+ytd-guide-section-renderer:nth-of-type(2) > div#items > ytd-guide-collapsible-entry-renderer {
+  display: none !important;
+}

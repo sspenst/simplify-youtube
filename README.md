@@ -10,21 +10,22 @@
 - Home
 - Shorts
 - Subscriptions
+- Channels
 - You
 - History
 - Playlists
 - Watch later
 - Liked videos
 - Your clips
-- Subscriptions title
 - Explore
 - More from YouTube
+- Footer
 - Voice search
 - Filter buttons
-- Subscriptions latest
 - Breaking news
+- Subscriptions latest
 - Comments
-- Footer
+- Related
 
 ## Documentation
 
