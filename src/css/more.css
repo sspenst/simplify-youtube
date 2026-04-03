@@ -1,8 +1,3 @@
-/* your videos link */
-ytd-guide-collapsible-section-entry-renderer:nth-of-type(1) > div#section-items > ytd-guide-entry-renderer:has(a[title="Your videos"]) {
-  display: none !important;
-}
-
 /* downloads link */
 ytd-guide-downloads-entry-renderer {
   display: none !important;
@@ -10,10 +5,5 @@ ytd-guide-downloads-entry-renderer {
 
 /* more from youtube section */
 ytd-guide-section-renderer:nth-of-type(5) {
-  display: none !important;
-}
-
-/* create button in top right */
-div#end > div#buttons > ytd-button-renderer {
   display: none !important;
 }

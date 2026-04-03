@@ -1,0 +1,3 @@
+div#end > div#buttons > ytd-button-renderer {
+  display: none !important;
+}

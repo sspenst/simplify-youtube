@@ -16,11 +16,13 @@
 - Playlists
 - Watch later
 - Liked videos
+- Your videos
 - Your clips
 - Explore
 - More from YouTube
 - Footer
 - Voice search
+- Create
 - Filter buttons
 - Breaking news
 - Subscriptions latest
